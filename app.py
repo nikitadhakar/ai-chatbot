@@ -12,7 +12,7 @@ def load_css(file_path: str):
 # Configure page settings
 st.set_page_config(page_title="AI Chatbot", page_icon="🤖")
 
-st.title("🤖  Nikita's AI Assistant")
+st.title("🤖  AI Assistant")
 load_css("style.css")
 
 # 1. Initialize API Client
