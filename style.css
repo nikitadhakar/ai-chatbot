@@ -1,0 +1,239 @@
+/* =========================================================
+   1. GLOBAL PAGE LAYOUT & SPACING
+   ========================================================= */
+.block-container {
+    max-width: 800px !important;
+    padding-top: 2rem !important;
+    padding-bottom: 7rem !important; /* Space so messages don't hide behind bottom input */
+}
+
+/* Hide Streamlit's default background footer bar behind input */
+footer {
+    display: none !important;
+}
+
+[data-testid="stBottom"] {
+    background: transparent !important;
+}
+
+[data-testid="stBottom"] > div {
+    background: transparent !important;
+}
+
+/* =========================================================
+   2. DYNAMIC CENTER-TO-BOTTOM TRANSITION
+   ========================================================= */
+
+/* Base Chat Input container configuration */
+div[data-testid="stChatInput"] {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    max-width: 760px !important;
+    width: 90% !important;
+    z-index: 9999 !important;
+    transition: bottom 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* STATE A: EMPTY CHAT (No messages yet) -> Center input and title */
+[data-testid="stAppViewContainer"]:not(:has([data-testid="stChatMessage"])) div[data-testid="stChatInput"] {
+    bottom: 42vh !important;
+}
+
+[data-testid="stAppViewContainer"]:not(:has([data-testid="stChatMessage"])) .block-container h1 {
+    text-align: center !important;
+    margin-top: 22vh !important;
+    font-size: 2.3rem !important;
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* STATE B: ACTIVE CHAT (Messages exist) -> Dock input at bottom */
+[data-testid="stAppViewContainer"]:has([data-testid="stChatMessage"]) div[data-testid="stChatInput"] {
+    bottom: 24px !important;
+}
+
+[data-testid="stAppViewContainer"]:has([data-testid="stChatMessage"]) .block-container h1 {
+    text-align: left !important;
+    margin-top: 0.5rem !important;
+    font-size: 1.8rem !important;
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* =========================================================
+   3. INPUT BAR: PILL SHAPE & REMOVE INNER BOXES
+   ========================================================= */
+
+/* The ONLY outer pill container */
+div[data-testid="stChatInput"] > div {
+    display: flex !important;
+    align-items: center !important;
+    background-color: #1E293B !important;
+    border: 1px solid #334155 !important;
+    border-radius: 28px !important;
+    padding: 6px 14px !important;
+    outline: none !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* No red outline on focus */
+div[data-testid="stChatInput"] > div:focus-within {
+    border-color: #7C3AED !important;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.3) !important;
+    outline: none !important;
+}
+
+/* Add an icon before placeholder text */
+/* div[data-testid="stChatInput"] > div::before {
+    content: "✨";
+    font-size: 1.1rem;
+    margin-right: 8px;
+    opacity: 0.8;
+    pointer-events: none;
+    flex-shrink: 0;
+} */
+
+/* Strip borders/backgrounds from all inner wrapper divs */
+div[data-testid="stChatInput"] > div div {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Textarea styling: completely flat and transparent */
+div[data-testid="stChatInput"] textarea {
+    flex-grow: 1 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #F8FAFC !important;
+    font-size: 0.95rem !important;
+    padding: 12px 8px !important;
+    resize: none !important;
+}
+
+div[data-testid="stChatInput"] textarea:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* =========================================================
+   4. SEND BUTTON (Inside right end of pill)
+   ========================================================= */
+div[data-testid="stChatInput"] button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 34px !important;
+    height: 34px !important;
+    margin-left: auto !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    outline: none !important;
+}
+
+/* Icon fill color (replaces red default) */
+div[data-testid="stChatInput"] button svg {
+    fill: #7C3AED !important;
+    color: #7C3AED !important;
+    transition: fill 0.2s ease !important;
+}
+
+/* Hover effect */
+div[data-testid="stChatInput"] button:hover {
+    background-color: rgba(124, 58, 237, 0.15) !important;
+}
+
+div[data-testid="stChatInput"] button:hover svg {
+    fill: #9061F9 !important;
+    color: #9061F9 !important;
+}
+
+/* Disabled state */
+div[data-testid="stChatInput"] button:disabled svg {
+    fill: #475569 !important;
+    color: #475569 !important;
+}
+
+/* =========================================================
+   5. CHAT BUBBLES
+   ========================================================= */
+div[data-testid="stChatMessage"] {
+    background-color: #1E293B !important;
+    border: 1px solid #334155 !important;
+    border-radius: 16px !important;
+    padding: 14px 18px !important;
+    margin-bottom: 12px !important;
+}
+
+/* Distinct styling for user messages */
+div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
+    background-color: #2D1B69 !important;
+    border-color: #4C1D95 !important;
+}
+
+/* =========================================================
+   1. BACKGROUND: 5 DISTINCT ICONS WITH GENEROUS SPACING
+   ========================================================= */
+[data-testid="stAppViewContainer"] {
+    background-color: #0b0f17 !important;
+    /* Expanded 120x120 SVG grid featuring 5 subtle icons:
+       - Sparkle (top-left)
+       - Chat bubble (top-right)
+       - Bot / Robot head (center)
+       - Code brackets < / > (bottom-left)
+       - 4-point Star (bottom-right) */
+    background-image: url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2394a3b8' fill-opacity='0.05'%3E%3C!-- 1. Sparkle --%3E%3Cpath d='M24 16l1.5 5.5L31 23l-5.5 1.5L24 30l-1.5-5.5L17 23l5.5-1.5z'/%3E%3C!-- 2. Chat Bubble --%3E%3Cpath d='M134 22h-14c-2.2 0-4 1.8-4 4v8c0 2.2 1.8 4 4 4h2v3l4-3h8c2.2 0 4-1.8 4-4v-8c0-2.2-1.8-4-4-4z'/%3E%3C!-- 3. Bot Face --%3E%3Cpath d='M76 68h8v2h-8zm-4 4h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H72c-1.1 0-2-.9-2-2v-8c0-1.1.9-2 2-2zm2 4v2h2v-2h-2zm10 0v2h2v-2h-2z'/%3E%3C!-- 4. Lightning Bolt --%3E%3Cpath d='M26 90h-5l4-10h-6l7-12h5l-4 10h6z'/%3E%3C!-- 5. CPU / Microchip --%3E%3Cpath d='M126 94v-2h-2v-4h2v-2h-2v-2h-4v-2h-2v2h-4v-2h-2v2h-2v4h-2v2h2v4h-2v2h2v2h4v2h2v-2h4v2h2v-2h4v-2h2v-4h-2zm-4 0h-8v-8h8v8z'/%3E%3C!-- 6. Code Brackets --%3E%3Cpath d='M70 140l-4-4 4-4 1.5 1.5-2.5 2.5 2.5 2.5zm12 0l-1.5-1.5 2.5-2.5-2.5-2.5L82 132l4 4z'/%3E%3C!-- 7. Star Accent --%3E%3Cpath d='M140 144v-3h-2v3h-3v2h3v3h2v-3h3v-2z'/%3E%3C/g%3E%3C/svg%3E") !important;
+    
+    background-repeat: repeat !important;
+    background-size: 160px 160px !important;
+}
+
+/* Ensure background transparency across main layout */
+header[data-testid="stHeader"],
+[data-testid="stMain"],
+.block-container {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* =========================================================
+   2. PERMANENTLY CENTERED TITLE (BOTH EMPTY & ACTIVE STATES)
+   ========================================================= */
+[data-testid="stAppViewContainer"] .block-container h1,
+[data-testid="stAppViewContainer"] h1 {
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    color: #F8FAFC !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+    transition: margin-top 0.45s cubic-bezier(0.16, 1, 0.3, 1), font-size 0.3s ease !important;
+}
+
+/* State A: When chat is empty (sitting nicely above centered input) */
+[data-testid="stAppViewContainer"]:not(:has([data-testid="stChatMessage"])) .block-container h1 {
+    margin-top: 22vh !important;
+    margin-bottom: 2rem !important;
+    font-size: 2.3rem !important;
+}
+
+/* State B: When messages appear (stays centered at the top) */
+[data-testid="stAppViewContainer"]:has([data-testid="stChatMessage"]) .block-container h1 {
+    margin-top: 1rem !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 1.8rem !important;
+}
